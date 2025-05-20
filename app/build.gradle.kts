@@ -36,7 +36,11 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.gson)
+    implementation(libs.okhttp)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.timber)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

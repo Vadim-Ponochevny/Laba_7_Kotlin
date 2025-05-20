@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Laba_7_Kotlin</string>
+    <string name="textForEditText">Введите имя или номер</string>
+    <string name="textForSearchButton">Найти</string>
 </resources>
