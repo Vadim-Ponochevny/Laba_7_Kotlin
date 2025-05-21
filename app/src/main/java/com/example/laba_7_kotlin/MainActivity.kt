@@ -71,8 +71,11 @@ class MainActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
                 val query = s.toString().trim().lowercase()
 
-                val sharedPref = getSharedPreferences(getString(R.string.app_preferences), Context.MODE_PRIVATE)
-                with(sharedPref.edit()) {
+                val sharedPreferencesOfSearch = getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+
+                val editor = sharedPreferencesOfSearch.edit()
+
+                editor.apply {
                     putString("SEARCH_FILTER", query)
                     apply()
                 }
