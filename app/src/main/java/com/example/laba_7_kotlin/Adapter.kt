@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 class Adapter(
-) : ListAdapter<Contact, Adapter.ViewHolder>(DiffCallback()) {
+    private val listener: (Contact) -> Unit
+) : ListAdapter<Contact, Adapter.ViewHolder>(ContactDiffCallback()) {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textName: TextView = itemView.findViewById(R.id.textName)
@@ -28,10 +29,11 @@ class Adapter(
         holder.textName.text = contact.name
         holder.textPhone.text = contact.phone
         holder.textType.text = contact.type
+        holder.itemView.setOnClickListener { listener(contact) }
     }
 }
 
-class DiffCallback : DiffUtil.ItemCallback<Contact>() {
+class ContactDiffCallback : DiffUtil.ItemCallback<Contact>() {
     override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean {
         return oldItem.phone == newItem.phone
     }

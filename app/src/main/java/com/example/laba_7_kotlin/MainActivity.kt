@@ -1,6 +1,8 @@
 package com.example.laba_7_kotlin
 
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -87,9 +89,18 @@ class MainActivity : AppCompatActivity() {
     private fun setupRecyclerView(contacts: List<Contact>) {
         val recyclerView = findViewById<RecyclerView>(R.id.rView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = Adapter()
+        adapter = Adapter { contact ->
+            callTheNumber(contact)
+        }
         recyclerView.adapter = adapter
         adapter.submitList(contacts)
+    }
+
+    private fun callTheNumber(selectedContact: Contact) {
+        val intent = Intent(Intent.ACTION_DIAL).apply {
+            data = Uri.parse("tel:${selectedContact.phone}")
+        }
+        startActivity(intent)
     }
 }
 private suspend fun getContactsFromJson(): List<Contact> = withContext(Dispatchers.IO) {
