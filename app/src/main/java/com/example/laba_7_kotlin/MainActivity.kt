@@ -1,6 +1,7 @@
 package com.example.laba_7_kotlin
 
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -44,6 +45,10 @@ class MainActivity : AppCompatActivity() {
 
         val editText = findViewById<EditText>(R.id.et_search)
 
+        val sharedPref = getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val savedQuery = sharedPref.getString("SEARCH_FILTER", "") ?: ""
+        editText.setText(savedQuery)
+
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -64,6 +69,13 @@ class MainActivity : AppCompatActivity() {
                 adapter.submitList(filtered)
             }
             override fun afterTextChanged(s: Editable?) {
+                val query = s.toString().trim().lowercase()
+
+                val sharedPref = getSharedPreferences(getString(R.string.app_preferences), Context.MODE_PRIVATE)
+                with(sharedPref.edit()) {
+                    putString("SEARCH_FILTER", query)
+                    apply()
+                }
             }
         })
     }
