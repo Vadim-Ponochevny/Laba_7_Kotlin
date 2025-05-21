@@ -2,9 +2,9 @@ package com.example.laba_7_kotlin
 
 
 import android.os.Bundle
-import android.widget.Button
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.EditText
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -39,25 +39,34 @@ class MainActivity : AppCompatActivity() {
 
         contactParsing()
 
-        val searchButton = findViewById<Button>(R.id.btn_search)
+
         val editText = findViewById<EditText>(R.id.et_search)
 
-        searchButton.setOnClickListener {
-            val query = editText.text.toString().trim().lowercase()
-
-            val filtered = if (query.isEmpty()) {
-                allContacts
-            } else {
-                allContacts.filter {
-                    it.name.lowercase().contains(query) ||
-                            it.phone.lowercase().contains(query) ||
-                            it.type.lowercase().contains(query)
-                }
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
-            adapter.submitList(filtered)
-        }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val query = s.toString().trim().lowercase()
+
+                val filtered = if (query.isEmpty()) {
+                    allContacts
+                } else {
+                    allContacts.filter {
+                        it.name.lowercase().contains(query) ||
+                                it.phone.lowercase().contains(query) ||
+                                it.type.lowercase().contains(query)
+                    }
+                }
+
+                adapter.submitList(filtered)
+            }
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
     }
+
+
 
     private fun contactParsing() {
         lifecycleScope.launch {
